@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <meta charset="UTF-8">
+        <title>{% block title %}Welcome!{% endblock %}</title>
+        <script
+            src="https://code.jquery.com/jquery-3.6.0.min.js"
+            integrity="sha256-/xUj+3OJU5yExlq6GSYGSHk7tPXikynS7ogEvDej/m4="
+            crossorigin="anonymous"></script>
+        <script src="https://cdn.tailwindcss.com"></script>
+        <style type="text/tailwindcss">
+            @layer utilities {
+                input, select {
+                    @apply border border-gray-500 rounded-sm;
+                }
+
+                table{
+                    @apply m-2;
+                }
+
+                td{
+                    @apply p-2;
+                }
+
+                .btn {
+                    @apply py-2 px-4 cursor-pointer rounded-sm;
+                }
+
+                .btn--default{
+                    @apply bg-blue-500 text-white;
+                }
+
+                .btn--danger{
+                    @apply bg-red-600 text-white;
+                }
+
+                .btn--accept{
+                    @apply bg-green-500 text-white;
+                }
+            }
+        </style>
+    </head>
+    <body>
+        {% block header %}
+
+        {% endblock %}
+        <div class="p-10">
+            {% block body %}
+            
+            {% endblock %}
+        </div>
+    </body>
+</html>

@@ -1,0 +1,31 @@
+{% macro menu(currentPage) %}
+    <header class="w-full shadow-md">
+        <ul class="flex flex-row flex-start">
+            <li class="p-4 {% if currentPage == 'dashboard' %} border-b-2 border-blue-500 {% endif %}">
+                <a href="{{ path('admin.dashboard') }}">
+                    Panel administratora
+                </a>
+            </li>
+            <li class="p-4 {% if currentPage == 'users' %} border-b-2 border-blue-500 {% endif %}">
+                <a href="{{ path('admin.users') }}">
+                    Użytkownicy
+                </a>
+            </li>
+            <li class="p-4 {% if currentPage == 'lessons' %} border-b-2 border-blue-500 {% endif %}">
+                <a href="{{ path('admin.lessons') }}">
+                    Lekcje
+                </a>
+            </li>
+            <li class="p-4 {% if currentPage == 'reservations' %} border-b-2 border-blue-500 {% endif %}">
+                <a href="{{ path('admin.reservations') }}">
+                    Rezerwacje
+                </a>
+            </li>
+            <li class="p-4 {% if currentPage == 'config' %} border-b-2 border-blue-500 {% endif %}">
+                <a href="{{ path('admin.dashboard') }}">
+                    Konfiguracja
+                </a>
+            </li>
+        </ul>
+    </header>
+{% endmacro %}

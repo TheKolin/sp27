@@ -1,0 +1,70 @@
+{% extends 'base.html.twig' %}
+
+{% import "Student/menu-macro.html.twig" as menu %}
+
+{% set dayOfWeek = ['Poniedziałek', 'Wtorek', 'Środa', 'Czwartek', 'Piątek'] %}
+
+{% block title %} Panel ucznia {% endblock %}
+
+{% block header %}
+    {{ menu.menu('dashboard') }}
+{% endblock %}
+
+{% block body %}
+    <h1 class=" text-xl font-semibold">
+        Cześć {{ app.user.firstName }} {{ app.user.lastName }}!
+    </h1>
+    <div class="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2">
+        <table class="table-fixed w-full">
+            <col span="1" class="w-1/12">
+            <tr class="border-b">
+                <th class="p-2">Godz.</th>
+                {% for i in 0..4 %}
+                    <th class="p-2 border-l">{{ dayOfWeek[i] }}</th>
+                {% endfor %}
+            </tr>
+            {% for i in 0..2 %}
+                <tr class="border-b">
+                    <td class="text-center">{{ i }}</td>
+                    {% for j in 0..4 %}
+                        <td class="border-l">
+                            <select id="lessons" class="w-full border-0 outline-none p-2">
+                                <option selected disabled>Wybierz</option>
+                                {% for choosableLesson in choosableLessons %}
+                                    {% if choosableLesson.dayOfWeek == j and choosableLesson.time == i %}
+                                        <option value="{{ choosableLesson.id }}">{{ choosableLesson.subject.name }}</option>
+                                    {% endif %}
+                                {% endfor %}
+                            </select>
+                        </td>
+                    {% endfor %}
+                </tr>
+            {% endfor %}
+        </table>
+        <button id="reserve" class="btn btn--accept">Zastosuj</button>
+    </div>
+    <script>
+        $('#reserve').on('click', function () {
+            var lessons = '';
+            $('*#lessons').each(function () {
+                if($(this).val()){
+                    lessons += $(this).val() + ",";
+                }
+            });
+
+            lessons = lessons.slice(0, -1)
+
+            $.ajax({
+                type: "GET",
+                url: "{{ path('student.add.reservation') }}",
+                data: {
+                    lessons: lessons
+                },
+                dataType: "json",
+                success: function (response) {
+                    console.log(response);
+                }
+            });
+        });
+    </script>
+{% endblock %}

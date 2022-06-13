@@ -1,0 +1,130 @@
+@import "admin.css";
+@import "animations.css";
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer base {
+    /* For reference: https://tailwindcss.com/docs/adding-base-styles#using-css */
+    body {
+        @apply text-gray-700;
+    }
+
+    h1, h2, h3, h4 {
+        @apply font-semibold;
+    }
+
+    h1 {
+        @apply text-4xl;
+    }
+
+    h2 {
+        @apply text-3xl;
+    }
+
+    h3 {
+        @apply text-2xl;
+    }
+
+    h4 {
+        @apply text-xl;
+    }
+
+    .btn {
+        @apply inline-block transform transition focus:outline-none focus:ring rounded-md disabled:opacity-50 disabled:pointer-events-none;
+    }
+
+    .btn--primary {
+        @apply bg-blue-600 hover:bg-blue-400 active:bg-blue-700 text-white;
+    }
+
+    .btn--lg {
+        @apply px-4 py-3;
+    }
+
+}
+
+@layer components {
+    .behind-the-raise-banner {
+        background: url(/public/images/big/behind-the-raise-banner-1920X1080.jpg);
+        background-repeat: no-repeat;
+        background-size: cover;
+        background-position: center;
+    }
+
+    .affiliates-banner {
+        background: url(/public/images/big/banner-affiliates-1440X376.jpg);
+        background-repeat: no-repeat;
+        background-size: cover;
+        background-position: 25%;
+    }
+
+    .mx-192 {
+        margin-left: 48rem;
+        margin-right: 48rem;
+    }
+
+    /* Button */
+    .btn {
+        @apply inline-block transform transition focus:outline-none focus:ring rounded-md disabled:opacity-50 disabled:pointer-events-none;
+    }
+
+    .btn--primary {
+        @apply bg-blue-600 hover:bg-blue-500 active:bg-blue-700 text-white;
+    }
+
+    .btn--danger {
+        @apply bg-red-600 hover:bg-red-500 active:bg-red-700 text-white;
+    }
+
+    .btn--secondary {
+        @apply bg-gray-200 hover:bg-gray-300 active:bg-gray-400 text-gray-800;
+    }
+
+    .btn--lg {
+        @apply px-4 py-3;
+    }
+
+    .btn--upload {
+        @apply btn btn--lg border border-dashed border-4 border-gray-400 hover:bg-blue-100 active:bg-blue-200 text-gray-600;
+    }
+
+    .input--brand {
+        @apply block transition p-3 border w-full border-gray-300 placeholder-gray-300 mt-2 rounded focus:outline-none focus:border-blue-500 invalid:bg-red-100 invalid:border-red-300;
+    }
+}
+
+ul.load-effect li{
+    display:inline-block;
+    font-weight: bold;
+}
+
+ul.load-effect li:nth-child(1) {
+    color: #fff;
+    -webkit-animation: coloring 1000ms infinite;
+    animation: coloring 1000ms infinite;
+}
+
+ul.load-effect li:nth-child(2) {
+    color: #fff;
+    -webkit-animation: coloring 1000ms infinite;
+    animation: coloring 1000ms infinite;
+    -webkit-animation-delay: 250ms;
+    animation-delay: 250ms;
+}
+
+ul.load-effect li:nth-child(3) {
+    color: #fff;
+    -webkit-animation: coloring 1000ms infinite;
+    animation: coloring 1000ms infinite;
+    -webkit-animation-delay:500ms;
+    animation-delay:500ms;
+}
+
+ul.load-effect li:nth-child(4) {
+    color: #fff;
+    -webkit-animation: coloring 1000ms infinite;
+    animation: coloring 1000ms infinite;
+    -webkit-animation-delay:750ms;
+    animation-delay:750ms;
+}

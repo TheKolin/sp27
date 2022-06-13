@@ -1,0 +1,134 @@
+{% extends 'base.html.twig' %}
+
+{% set TEACHER = constant('App\\Entity\\UserType::TEACHER') %}
+
+{% import "Admin/macro/menu-macro.html.twig" as menu %}
+
+{% block title %} Użytkownicy {% endblock %}
+
+{% block header %}
+    {{ menu.menu('users') }}
+{% endblock %}
+
+{% block body %}
+    <div>
+        <select id="group">
+            <option selected disabled>Wybierz</option>
+            <option value="{{ TEACHER }}">Nauczyciele</option>
+            {% for group in groups %}
+                <option value="{{ group.id }}">{{ group.number }}{{ group.subGroup }}</option>
+            {% endfor %}
+        </select>
+    </div>
+    <div>
+        <form>
+            <input type="number" name="number">
+            <input type="text" name="subclass">
+        </form>
+        <button id="create-group" class="btn btn--accept" type="button">Dodaj</button>
+    </div>
+    <div id="users">
+    
+    </div>
+    <div>
+        <form>
+            <input type="text" name="firstName">
+            <input type="text" name="lastName">
+            <select id="user-group">
+                <option selected disabled>Wybierz</option>
+                <option value="{{ TEACHER }}">Nauczyciele</option>
+                {% for group in groups %}
+                    <option value="{{ group.id }}">{{ group.number }}{{ group.subGroup }}</option>
+                {% endfor %}
+            </select>
+        </form>
+        <button id="create" class="btn btn--accept" type="button">Dodaj</button>
+    </div>
+    <script>
+        $('#group').on('change', function () {
+            var group = $(this).val();
+
+            $('#users-table').remove();
+            $.ajax({
+                type: "GET",
+                url: "{{ path('admin.get.users') }}",
+                data: {
+                    group: group
+                },
+                dataType: "json",
+                success: function (response) {
+                    var data = '';
+                    response.forEach(user => {
+                        data += `
+                            <tr>
+                                <td>${user['firstName']}</td>
+                                <td>${user['lastName']}</td>
+                                <td>${user['userStatus']['name']}</td>
+                                <td>${user['uuid']}</td>
+                                <td>${user['defaultPassword']}</td>
+                                <td><button class="btn btn--danger" value="${user['id']}" onclick="deleteUser(this)">Usuń</button></td>
+                            </tr>
+                        `
+                    })
+                    $('#users').append(
+                        `<table id="users-table">` + data + `</table>`
+                    );
+                }
+            });
+        });
+
+        $('#create').on('click', function () {
+            var group = $('#user-group').val();
+            var firstName = $('input[name=firstName]').val();
+            var lastName = $('input[name=lastName]').val();
+
+            $.ajax({
+                type: "GET",
+                url: "{{ path('admin.add.users') }}",
+                data: {
+                    firstName: firstName,
+                    lastName: lastName,
+                    group: group
+                },
+                dataType: "json",
+                success: function (response) {
+                    console.log(response);
+                }
+            });
+        });
+
+        $('#create-group').on('click', function () {
+            var number = $('input[name=number]').val();
+            var subclass = $('input[name=subclass]').val();
+
+            $.ajax({
+                type: "GET",
+                url: "{{ path('admin.add.group') }}",
+                data: {
+                    number: number,
+                    subclass: subclass,
+                },
+                dataType: "json",
+                success: function (response) {
+                    console.log(response);
+                }
+            });
+        });
+
+        function deleteUser(button) {
+            var id = button.value;
+            $.ajax({
+                url: "{{ path('admin.delete.users') }}",
+                data: {
+                    id: id
+                },
+                method: "GET",
+                contentType: 'application/json',
+                dataType: 'json',
+                success: function (response) {
+                    console.log(response);
+                }
+            });
+        }
+    </script>
+{% endblock %}
