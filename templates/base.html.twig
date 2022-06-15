@@ -2,6 +2,7 @@
 <html>
     <head>
         <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
         <title>{% block title %}Welcome!{% endblock %}</title>
         <script
             src="https://code.jquery.com/jquery-3.6.0.min.js"
@@ -11,14 +12,22 @@
         <style type="text/tailwindcss">
             @layer utilities {
                 input, select {
-                    @apply border border-gray-500 rounded-sm;
+                    @apply border border-gray-500 rounded-sm bg-transparent p-2;
                 }
 
                 table{
                     @apply m-2;
                 }
 
-                td{
+                tr{
+                    @apply border-b border-gray-200
+                }
+
+                tr:nth-child(even){
+                    @apply bg-gray-100
+                }
+
+                td, th{
                     @apply p-2;
                 }
 
@@ -36,6 +45,10 @@
 
                 .btn--accept{
                     @apply bg-green-500 text-white;
+                }
+
+                h1{
+                    @apply text-2xl mt-4 mb-2
                 }
             }
         </style>

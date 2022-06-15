@@ -11,20 +11,89 @@
 {% endblock %}
 
 {% block body %}
+    <h1>Filtry</h1>
     <div>
-        <table>
-            {% for reservation in reservations %}
-                <tr id="reservation-{{ reservation.id }}">
-                    <td>{{ reservation.id }}</td>
-                    <td>{{ reservation.student.firstName }} {{ reservation.student.lastName }}</td>
-                    <td>{{ reservation.lesson.subject.name }}</td>
-                    <td>{{ reservation.reservationStatus.name }}</td>
-                    <td><button class="btn btn--danger" value="{{ reservation.id }}" onclick="deleteReservation(this)">Usuń</button></td>
-                </tr>
+        <select id="students">
+            <option selected disabled>Nauczyciel</option>
+            <option value="">-</option>
+            {% for student in students %}
+                <option value="{{ student.id }}">{{ student.firstName }} {{ student.lastName }}</option>
             {% endfor %}
+        </select>
+        <select id="statuses">
+            <option selected disabled>Status</option>
+            <option value="">-</option>
+            {% for reservationStatus in reservationStatuses %}
+                <option value="{{ reservationStatus.code }}">{{ reservationStatus.name }}</option>
+            {% endfor %}
+        </select>
+        <button id="filter" class="btn btn--default">Filtruj</button>
+    </div>
+    <div id="reservation-table">
+        <table id="reservations">
+            <tr>
+                <th>Numer</th>
+                <th>Uczeń</th>
+                <th>Przedmiot</th>
+                <th>Status</th>
+            </tr>
+                {% for reservation in reservations %}
+                    <tr id="reservation-{{ reservation.id }}">
+                        <td>{{ reservation.id }}</td>
+                        <td>{{ reservation.student.firstName }} {{ reservation.student.lastName }}</td>
+                        <td>{{ reservation.lesson.subject.name }}</td>
+                        <td>{{ reservation.reservationStatus.name }}</td>
+                        <td>
+                            <button class="btn btn--danger" value="{{ reservation.id }}" onclick="deleteReservation(this)">Usuń</button>
+                        </td>
+                    </tr>
+                {% endfor %}
         </table>
     </div>
     <script>
+        $('#filter').on('click', function () {
+            var student = $('#students').val();
+            var status = $('#statuses').val();
+
+            $('#reservations').remove();
+            $.ajax({
+                type: "GET",
+                url: "{{ path('admin.get.reservations') }}",
+                data: {
+                    student: student,
+                    status: status
+                },
+                dataType: "json",
+                success: function (response) {
+                    var data = '';
+                    response.forEach(reservation => {
+                        data += `
+                            <tr>
+                                <td>${reservation['id']}</td>
+                                <td>${reservation['student']['firstName']} ${reservation['student']['lastName']}</td>
+                                <td>${reservation['lesson']['subject']['name']}</td>
+                                <td>${reservation['reservationStatus']['name']}</td>
+                                <td>
+                                    <button class="btn btn--danger" value="${reservation['id']}" onclick="deleteReservation(this)">Usuń</button>
+                                </td>
+                            </tr>
+                        `
+                    })
+                    $('#reservation-table').append(
+                        `<table id="reservations">
+                            <tr>
+                            <th>Numer</th>
+                            <th>Uczeń</th>
+                            <th>Przedmiot</th>
+                            <th>Status</th>
+                        </tr>` + 
+                            data 
+                        + `</table>`
+                    );
+                }
+            });
+        });
+
         function deleteReservation(button) {
             var id = button.value;
             $.ajax({

@@ -1,6 +1,12 @@
 {% extends 'base.html.twig' %}
 
-{% block title %}Login{% endblock %}
+{% import "Admin/macro/menu-macro.html.twig" as menu %}
+
+{% block title %} Panel administracyjny {% endblock %}
+
+{% block header %}
+    {{ menu.menu('dashboard') }}
+{% endblock %}
 
 {% block body %}
     

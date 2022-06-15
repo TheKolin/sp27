@@ -2,6 +2,8 @@
 
 {% import "Admin/macro/menu-macro.html.twig" as menu %}
 
+{% set dayOfWeek = ['Poniedziałek', 'Wtorek', 'Środa', 'Czwartek', 'Piątek'] %}
+
 {% block title %} Lekcje {% endblock %}
 
 {% block header %}
@@ -9,59 +11,78 @@
 {% endblock %}
 
 {% block body %}
+    <h1>Dodawanie przedmiotu</h1>
+    <div class="flex flex-row items-center">
+        <form>
+            <input type="text" name="name" placeholder="Nazwa przedmiotu">
+        </form>
+        <button id="create-subject" type="button" class="btn btn--accept m-2">Dodaj</button>
+    </div>
+    <h1>Dodawanie zajęć</h1>
+    <div class="flex flex-row items-center">
+        <form>
+            <select id="subjects">
+                <option selected disabled>Przedmiot</option>
+                {% for subject in subjects %}
+                    <option value="{{ subject.id }}">{{ subject.name }}</option>
+                {% endfor %}
+            </select>
+            <select id="teachers">
+                <option selected disabled>Nauczyciel</option>
+                {% for teacher in teachers %}
+                    <option value="{{ teacher.id }}">{{ teacher.firstName }} {{ teacher.lastName }}</option>
+                {% endfor %}
+            </select>
+            <select id="types">
+                <option selected disabled>Typ zajęć</option>
+                {% for lessonType in lessonTypes %}
+                    <option value="{{ lessonType.code }}">{{ lessonType.name }}</option>
+                {% endfor %}
+            </select>
+            <input type="number" name="dayOfWeek" placeholder="Dzień tygodnia">
+            <input type="number" name="time" placeholder="Godzina lekcyjna">
+        </form>
+        <button id="create-lesson" type="button" class="btn btn--accept m-2">Dodaj</button>
+    </div>
+    <h1>Przedmioty szkolne</h1>
     <div>
         <table>
+            <tr>
+                <th>Numer</th>
+                <th>Nazwa</th>
+            </tr>
             {% for subject in subjects %}
-                <tr>
+                <tr class="border-b">
                     <td>{{ subject.id }}</td>
                     <td>{{ subject.name }}</td>
                 </tr>
             {% endfor %}
         </table>
     </div>
+    <h1>Zajęcia szkolne</h1>
     <div>
         <table>
+            <tr>
+                <th>Przedmiot</th>
+                <th>Nauczyciel</th>
+                <th>Typ zajęć</th>
+                <th>Dzień tygodnia</th>
+                <th>Godzina lekcyjna</th>
+            </tr>
             {% for lesson in lessons %}
-                <tr id="lesson-{{ lesson.id }}">
+                <tr id="lesson-{{ lesson.id }}" class="border-b">
                     <td>{{ lesson.subject.name }}</td>
                     <td>{{ lesson.teacher.firstName }} {{ lesson.teacher.lastName }}</td>
                     <td>{{ lesson.lessonType.name }}</td>
-                    <td>{{ lesson.dayOfWeek }}</td>
-                    <td>{{ lesson.time|date('H:i') }}</td>
+                    <td>{{ dayOfWeek[lesson.dayOfWeek] }}</td>
+                    <td>{{ lesson.time }}</td>
                     <td><button class="btn btn--danger" value="{{ lesson.id }}" onclick="deleteLesson(this)">Usuń</button></td>
                 </tr>
             {% endfor %}
         </table>
     </div>
-    <div>
-        <form>
-            <select id="subjects">
-                <option selected disabled>Wybierz</option>
-                {% for subject in subjects %}
-                    <option value="{{ subject.id }}">{{ subject.name }}</option>
-                {% endfor %}
-            </select>
-            <select id="teachers">
-                <option selected disabled>Wybierz</option>
-                {% for teacher in teachers %}
-                    <option value="{{ teacher.id }}">{{ teacher.firstName }} {{ teacher.lastName }}</option>
-                {% endfor %}
-            </select>
-            <select id="types">
-                <option selected disabled>Wybierz</option>
-                {% for lessonType in lessonTypes %}
-                    <option value="{{ lessonType.code }}">{{ lessonType.name }}</option>
-                {% endfor %}
-            </select>
-            <input type="number" name="dayOfWeek">
-            <input type="number" name="time">
-        </form>
-        <button id="create" type="button">Dodaj</button>
-    </div>
     <script>
-
-        $('#create').on('click', function (e) {
-
+        $('#create-lesson').on('click', function (e) {
             var subject = $('#subjects').val();
             var teacher = $('#teachers').val();
             var lessonTypeCode = $('#types').val();
@@ -76,6 +97,23 @@
                     lessonTypeCode: lessonTypeCode,
                     dayOfWeek: dayOfWeek,
                     time: time
+                },
+                method: "GET",
+                contentType: 'application/json',
+                dataType: 'json',
+                success: function (response) {
+                    console.log(response);
+                }
+            });
+        });
+
+        $('#create-subject').on('click', function (e) {
+            var name = $('input[name=name]').val();
+
+            $.ajax({
+                url: "{{ path('admin.add.subject') }}",
+                data: {
+                    name: name
                 },
                 method: "GET",
                 contentType: 'application/json',

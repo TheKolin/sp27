@@ -5,10 +5,6 @@
 {% block body %}
     <div class="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2">
         <form class="w-full h-full flex flex-col items-end shadow-md p-24 bg-gray-100" method="post">
-            {% if error %}
-                <div class="alert alert-danger">{{ error.messageKey|trans(error.messageData, 'security') }}</div>
-            {% endif %}
-
             <h1 class="h3 mb-3 font-weight-normal">Zaloguj się</h1>
             <label for="inputUuid">Login</label>
             <input type="text" value="{{ last_username }}" name="uuid" id="inputUuid" class="form-control" autocomplete="username" required autofocus>
@@ -21,13 +17,18 @@
 
             <div class="checkbox mb-3">
                 <label>
-                    <input type="checkbox" name="_remember_me"> Remember me
+                    <input type="checkbox" name="_remember_me"> Zapamiętaj mnie
                 </label>
             </div>
 
-            <button class="btn btn-lg btn-primary" type="submit">
-                Sign in
+            <button class="btn btn--default" type="submit">
+                Zaloguj
             </button>
+
+            {% if error %}
+                <div class="bg-red-600 border border-red-800 text-white p-4 w-full text-center rounded mt-4">{{ error.messageKey|trans(error.messageData, 'security') }}</div>
+            {% endif %}
         </form>
+        <img class="w-full h-auto" src="{{ asset('img/logo.png') }}">
     </div>
 {% endblock %}

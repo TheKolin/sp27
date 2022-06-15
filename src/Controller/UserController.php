@@ -5,6 +5,7 @@ namespace App\Controller;
 use App\Entity\LessonType;
 use App\Entity\Reservation;
 use App\Entity\ReservationStatus;
+use App\Entity\UserType;
 use App\Repository\GroupRepository;
 use App\Repository\LessonRepository;
 use App\Repository\LessonTypeRepository;
@@ -60,13 +61,68 @@ class UserController extends AbstractController
             return $this->redirectToRoute('security.password');
         }
 
-        $choosableLessons = $this->lessonRepository->findBy(['lessonType' => LessonType::CHOOSABLE], ['time' => 'ASC']);
-        $fixedLessons = $this->lessonRepository->findBy(['lessonType' => LessonType::FIXED], ['time' => 'ASC']);
+        if($this->getUser()->getUserType()->getCode() == UserType::STUDENT){
+            $choosableLessons = $this->lessonRepository->findBy(['lessonType' => LessonType::CHOOSABLE], ['time' => 'ASC']);
+            $fixedLessons = $this->lessonRepository->findBy(['lessonType' => LessonType::FIXED], ['time' => 'ASC']);
+            $reservations = $this->reservationRepository->findBy(['student' => $this->getUser()->getId()]);
 
-        return $this->render('Student/dashboard.html.twig', [
-            'choosableLessons' => $choosableLessons,
-            'fixedLessons' => $fixedLessons
-        ]);
+            return $this->render('User/dashboard.html.twig', [
+                'choosableLessons' => $choosableLessons,
+                'fixedLessons' => $fixedLessons,
+                'reservations' => $reservations
+            ]);
+        }
+
+        if($this->getUser()->getUserType()->getCode() == UserType::TEACHER){
+            $lessons = $this->lessonRepository->findBy(['teacher' => $this->getUser()->getId()], ['dayOfWeek' => 'ASC', 'time' => 'ASC']);
+
+            return $this->render('User/dashboard.html.twig', [
+                'lessons' => $lessons
+            ]);
+        }
+    }
+
+    /**
+     * @Route(
+     *      path="/teacher/ajax/get/reservation",
+     *      methods={"GET"},
+     *      name="teacher.get.reservations",
+     * )
+     */
+    public function teacherGetReservations(Request $request): Response {
+        $lesson = $request->query->get('lesson');
+        
+        $reservations = $this->reservationRepository->findBy(['lesson' => $lesson]);
+
+        return $this->json($reservations);
+    }
+
+    /**
+     * @Route(
+     *      path="/teacher/ajax/set/status",
+     *      methods={"GET"},
+     *      name="teacher.set.status",
+     * )
+     */
+    public function teacherSetStatus(Request $request): Response {
+        $students = $request->query->all();
+        
+        foreach($students as $reservation => $status){
+            if($status){
+                $reservationStatus = ReservationStatus::DONE;
+            } else {
+                $reservationStatus = ReservationStatus::UNDONE;
+            }
+
+            $reservationStatus = $this->reservationStatusRepository->findOneBy(['code' => $reservationStatus]);
+            $reservation = $this->reservationRepository->findOneBy(['id' => $reservation]);
+            $reservation->setReservationStatus($reservationStatus);
+
+            $this->manager->persist($reservation);
+            $this->manager->flush();
+        }
+
+        return $this->json(['message' => 'Done']);
     }
 
     /**
@@ -117,7 +173,7 @@ class UserController extends AbstractController
      * )
      */
     public function userPassword(): Response {
-        return $this->render('Student/password.html.twig', [
+        return $this->render('User/password.html.twig', [
 
         ]);
     }

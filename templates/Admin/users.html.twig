@@ -11,38 +11,41 @@
 {% endblock %}
 
 {% block body %}
-    <div>
-        <select id="group">
-            <option selected disabled>Wybierz</option>
-            <option value="{{ TEACHER }}">Nauczyciele</option>
-            {% for group in groups %}
-                <option value="{{ group.id }}">{{ group.number }}{{ group.subGroup }}</option>
-            {% endfor %}
-        </select>
-    </div>
-    <div>
+    <h1>Dodaj klasę</h1>
+    <div class="flex flex-row items-center">
         <form>
-            <input type="number" name="number">
-            <input type="text" name="subclass">
+            <input type="number" name="number" placeholder="Klasa">
+            <input type="text" name="subclass" placeholder="Profil">
         </form>
-        <button id="create-group" class="btn btn--accept" type="button">Dodaj</button>
+        <button id="create-group" class="btn btn--accept m-2" type="button">Dodaj</button>
     </div>
-    <div id="users">
-    
-    </div>
-    <div>
+    <h1>Dodaj użytkownika</h1>
+    <div class="flex flex-row items-center">
         <form>
-            <input type="text" name="firstName">
-            <input type="text" name="lastName">
+            <input type="text" name="firstName" placeholder="Imię">
+            <input type="text" name="lastName" placeholder="Nazwisko">
             <select id="user-group">
-                <option selected disabled>Wybierz</option>
+                <option selected disabled>Grupa</option>
                 <option value="{{ TEACHER }}">Nauczyciele</option>
                 {% for group in groups %}
                     <option value="{{ group.id }}">{{ group.number }}{{ group.subGroup }}</option>
                 {% endfor %}
             </select>
         </form>
-        <button id="create" class="btn btn--accept" type="button">Dodaj</button>
+        <button id="create" class="btn btn--accept m-2" type="button">Dodaj</button>
+    </div>
+    <h1>Wybierz grupę do wyświetlenia użytkowników</h1>
+    <div>
+        <select id="group">
+            <option selected disabled>Grupa</option>
+            <option value="{{ TEACHER }}">Nauczyciele</option>
+            {% for group in groups %}
+                <option value="{{ group.id }}">{{ group.number }}{{ group.subGroup }}</option>
+            {% endfor %}
+        </select>
+    </div>
+    <div id="users">
+    
     </div>
     <script>
         $('#group').on('change', function () {

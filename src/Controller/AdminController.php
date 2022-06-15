@@ -4,6 +4,7 @@ namespace App\Controller;
 
 use App\Entity\Group;
 use App\Entity\Lesson;
+use App\Entity\Subject;
 use App\Entity\User;
 use App\Entity\UserStatus;
 use App\Entity\UserType;
@@ -206,6 +207,26 @@ class AdminController extends AbstractController
 
     /**
      * @Route(
+     *      path="/admin/ajax/subject/add",
+     *      methods={"GET"},
+     *      name="admin.add.subject",
+     * )
+     */
+    public function adminAddSubject(Request $request): Response {
+
+        $name = $request->query->get('name');
+
+        $subject = new Subject;
+        $subject->setName($name);
+
+        $this->manager->persist($subject);
+        $this->manager->flush();
+
+        return $this->json(['message' => 'Subject Added']);
+    }
+
+    /**
+     * @Route(
      *      path="/admin/ajax/add/lessons",
      *      methods={"GET"},
      *      name="admin.add.lessons",
@@ -262,10 +283,45 @@ class AdminController extends AbstractController
     public function adminReservations(): Response {
 
         $reservations = $this->reservationRepository->findAll();
+        $subjects = $this->subjectRepository->findAll();
+        $students = $this->userRepository->findBy(['userType' => UserType::TEACHER]);
+        $reservationStatuses = $this->reservationStatusRepository->findAll();
 
         return $this->render('Admin/reservations.html.twig', [
+            'subjects' => $subjects,
+            'students' => $students,
+            'reservationStatuses' => $reservationStatuses,
             'reservations' => $reservations
         ]);
+    }
+
+    /**
+     * @Route(
+     *      path="/admin/ajax/reservations/get",
+     *      methods={"GET"},
+     *      name="admin.get.reservations",
+     * )
+     */
+    public function adminGetReservations(Request $request): Response {
+
+        $student = $request->query->get('student');
+        $status = $request->query->get('status');
+
+        $criteria = [];
+        if($student){
+            $criteria = array_merge($criteria,[
+                'student' => $student
+            ]);
+        }
+        if($status){
+            $criteria = array_merge($criteria,[
+                'reservationStatus' => $status
+            ]);
+        }
+        
+        $reservations = $this->reservationRepository->findBy($criteria);
+        
+        return $this->json($reservations);
     }
 
      /**
