@@ -32,7 +32,7 @@
                         {% for j in 0..2 %}
                             <div class="border-b p-2 flex flex-row items-center">
                                 <span class="{% if i != 0 %} md:hidden block {% endif %} mr-4">{{ j }}</span>
-                                <select id="lessons" class="w-full border-0 outline-none p-2">
+                                <select id="lessons" class="w-full border-0 outline-none p-2" {% if reservations|length > 0 %}disabled{% endif %}>
                                     <option selected disabled>Wybierz</option>
                                     {% for choosableLesson in choosableLessons %}
                                         {% if choosableLesson.dayOfWeek == i and choosableLesson.time == j %}
@@ -42,6 +42,11 @@
                                                 {% else %} 
                                                     value="{{ choosableLesson.id }}" 
                                                 {% endif %}
+
+                                                {% for reservation in reservations %}
+                                                    {% if choosableLesson.id == reservation.lesson.id %} selected {% endif %}
+                                                {% endfor %}
+                                                
                                             >   
                                                 {{ choosableLesson.subject.name }} ({{ choosableLesson.studentsCount }})
                                             </option>
@@ -63,7 +68,7 @@
                         lessons += $(this).val() + ",";
                     } else {
                         snackbar('Zarezerwuj wszystkie dostępne godziny');
-                        return false;
+                        //return false;
                     }
                 });
 
@@ -78,6 +83,9 @@
                     dataType: "json",
                     success: function (response) {
                         snackbar(response['message']);
+                        $('*#lessons').each(function () {
+                            $(this).attr('disabled', true);
+                        });
                     }
                 });
             });
@@ -147,6 +155,9 @@
                     dataType: "json",
                     success: function (response) {
                         snackbar(response['message']);
+                        $('*input[name=presence]').each(function () {
+                            $(this).attr('disabled', true);
+                        });
                     }
                 });
             });
