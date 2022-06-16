@@ -105,7 +105,8 @@
                 contentType: 'application/json',
                 dataType: 'json',
                 success: function (response) {
-                    console.log(response);
+                    snackbar(response['message']);
+                    location.reload();
                 }
             });
         }

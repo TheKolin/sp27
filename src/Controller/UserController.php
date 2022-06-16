@@ -122,7 +122,7 @@ class UserController extends AbstractController
             $this->manager->flush();
         }
 
-        return $this->json(['message' => 'Done']);
+        return $this->json(['message' => 'Zapisano']);
     }
 
     /**
@@ -149,7 +149,7 @@ class UserController extends AbstractController
             $this->manager->flush();
         }
 
-        return $this->json(['message' => 'Reserved']);
+        return $this->json(['message' => 'Zarezerwowano']);
     }
 
      /**
@@ -211,6 +211,6 @@ class UserController extends AbstractController
         $this->manager->persist($user);
         $this->manager->flush();
 
-        return $this->json(['message' => 'Changed']);
+        return $this->json(['message' => 'Hasło zmienione']);
     }
 }

@@ -95,7 +95,8 @@
                 },
                 dataType: "json",
                 success: function (response) {
-                    console.log(response);
+                    snackbar(response['message']);
+                    location.reload();
                 }
             });
         });
@@ -113,7 +114,8 @@
                 },
                 dataType: "json",
                 success: function (response) {
-                    console.log(response);
+                    snackbar(response['message']);
+                    location.reload();
                 }
             });
         });
@@ -129,7 +131,8 @@
                 contentType: 'application/json',
                 dataType: 'json',
                 success: function (response) {
-                    console.log(response);
+                    snackbar(response['message']);
+                    location.reload();
                 }
             });
         }

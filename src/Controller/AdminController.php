@@ -139,7 +139,7 @@ class AdminController extends AbstractController
         $this->manager->persist($user);
         $this->manager->flush();
 
-        return $this->json(['message' => 'User Added']);
+        return $this->json(['message' => 'Użytkownik dodany']);
     }
 
     /**
@@ -161,7 +161,7 @@ class AdminController extends AbstractController
         $this->manager->persist($group);
         $this->manager->flush();
 
-        return $this->json(['message' => 'Group Added']);
+        return $this->json(['message' => 'Grupa dodana']);
     }
 
     /**
@@ -180,7 +180,7 @@ class AdminController extends AbstractController
         $this->manager->remove($user);
         $this->manager->flush();
 
-        return $this->json(['message' => 'Deleted']);
+        return $this->json(['message' => 'Usunięto użytkownika']);
     }
 
     /**
@@ -222,7 +222,7 @@ class AdminController extends AbstractController
         $this->manager->persist($subject);
         $this->manager->flush();
 
-        return $this->json(['message' => 'Subject Added']);
+        return $this->json(['message' => 'Dodano przedmiot']);
     }
 
     /**
@@ -251,7 +251,7 @@ class AdminController extends AbstractController
         $this->manager->persist($lesson);
         $this->manager->flush();
 
-        return $this->json(['message' => 'Lesson Added']);
+        return $this->json(['message' => 'Dodano lekcję']);
     }
 
      /**
@@ -270,7 +270,7 @@ class AdminController extends AbstractController
         $this->manager->remove($lesson);
         $this->manager->flush();
 
-        return $this->json(['message' => 'Deleted']);
+        return $this->json(['message' => 'Usunięto lekcję']);
     }
 
     /**
@@ -340,6 +340,6 @@ class AdminController extends AbstractController
         $this->manager->remove($reservation);
         $this->manager->flush();
 
-        return $this->json(['message' => 'Deleted']);
+        return $this->json(['message' => 'Usunięto rezerwację']);
     }
 }
