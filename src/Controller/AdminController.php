@@ -72,7 +72,7 @@ class AdminController extends AbstractController
      */
     public function adminUsers(): Response {
 
-        $groups = $this->groupRepository->findAll();
+        $groups = $this->groupRepository->findBy([], ['number' => 'ASC', 'subGroup' => 'ASC']);
 
         return $this->render('Admin/users.html.twig', [
             'groups' => $groups
@@ -144,28 +144,6 @@ class AdminController extends AbstractController
 
     /**
      * @Route(
-     *      path="/admin/ajax/group/add",
-     *      methods={"GET"},
-     *      name="admin.add.group",
-     * )
-     */
-    public function adminAddGroup(Request $request): Response {
-
-        $number = $request->query->get('number');
-        $subclass = $request->query->get('subclass');
-
-        $group = new Group;
-        $group->setNumber($number);
-        $group->setSubGroup($subclass);
-
-        $this->manager->persist($group);
-        $this->manager->flush();
-
-        return $this->json(['message' => 'Grupa dodana']);
-    }
-
-    /**
-     * @Route(
      *      path="/admin/ajax/delete/users",
      *      methods={"GET"},
      *      name="admin.delete.users",
@@ -181,6 +159,56 @@ class AdminController extends AbstractController
         $this->manager->flush();
 
         return $this->json(['message' => 'Usunięto użytkownika']);
+    }
+
+    /**
+     * @Route(
+     *      path="/admin/ajax/revoke/password",
+     *      methods={"GET"},
+     *      name="admin.revoke.password",
+     * )
+     */
+    public function adminRevokeUserPassword(Request $request, UserPasswordHasherInterface $userPasswordHasher): Response {
+
+        $id = $request->query->get('id');
+
+        $user = $this->userRepository->findOneBy(['id' => $id]);
+
+        $defaultPassword = uniqid();
+        $user->setPassword($userPasswordHasher->hashPassword($user, $defaultPassword));
+        $user->setDefaultPassword($defaultPassword);
+
+        $this->manager->persist($user);
+        $this->manager->flush();
+
+        return $this->json(['message' => 'Hasło zresetowane']);
+    }
+
+    /**
+     * @Route(
+     *      path="/admin/ajax/group/add",
+     *      methods={"GET"},
+     *      name="admin.add.group",
+     * )
+     */
+    public function adminAddGroup(Request $request): Response {
+
+        $number = $request->query->get('number');
+        $subclass = $request->query->get('subclass');
+
+        $findGroup = $this->groupRepository->findBy(['number' => $number, 'subGroup' => $subclass]);
+        if($findGroup > 0){
+            return $this->json(['message' => 'Taka klasa już istnieje']);
+        }
+
+        $group = new Group;
+        $group->setNumber($number);
+        $group->setSubGroup($subclass);
+
+        $this->manager->persist($group);
+        $this->manager->flush();
+
+        return $this->json(['message' => 'Grupa dodana']);
     }
 
     /**
@@ -215,6 +243,11 @@ class AdminController extends AbstractController
     public function adminAddSubject(Request $request): Response {
 
         $name = $request->query->get('name');
+
+        $findSubject = $this->subjectRepository->findBy(['name' => $name]);
+        if($findSubject > 0){
+            return $this->json(['message' => 'Taki przedmiot już istnieje']);
+        }
 
         $subject = new Subject;
         $subject->setName($name);
@@ -284,7 +317,7 @@ class AdminController extends AbstractController
 
         $reservations = $this->reservationRepository->findAll();
         $subjects = $this->subjectRepository->findAll();
-        $students = $this->userRepository->findBy(['userType' => UserType::TEACHER]);
+        $students = $this->userRepository->findBy(['userType' => UserType::STUDENT]);
         $reservationStatuses = $this->reservationStatusRepository->findAll();
 
         return $this->render('Admin/reservations.html.twig', [

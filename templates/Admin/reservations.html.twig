@@ -14,10 +14,10 @@
     <h1>Filtry</h1>
     <div>
         <select id="students">
-            <option selected disabled>Nauczyciel</option>
+            <option selected disabled>Uczeń</option>
             <option value="">-</option>
             {% for student in students %}
-                <option value="{{ student.id }}">{{ student.firstName }} {{ student.lastName }}</option>
+                <option value="{{ student.id }}">{{ student.firstName }} {{ student.lastName }} {{ student.class.number }}{{ student.class.subGroup }}</option>
             {% endfor %}
         </select>
         <select id="statuses">
@@ -34,6 +34,7 @@
             <tr>
                 <th>Numer</th>
                 <th>Uczeń</th>
+                <th>Klasa</th>
                 <th>Przedmiot</th>
                 <th>Status</th>
             </tr>
@@ -41,6 +42,7 @@
                     <tr id="reservation-{{ reservation.id }}">
                         <td>{{ reservation.id }}</td>
                         <td>{{ reservation.student.firstName }} {{ reservation.student.lastName }}</td>
+                        <td>{{ reservation.student.class.number }}{{ reservation.student.class.subGroup }}</td>
                         <td>{{ reservation.lesson.subject.name }}</td>
                         <td>{{ reservation.reservationStatus.name }}</td>
                         <td>
@@ -71,6 +73,7 @@
                             <tr>
                                 <td>${reservation['id']}</td>
                                 <td>${reservation['student']['firstName']} ${reservation['student']['lastName']}</td>
+                                <td>${reservation['student']['class']['number']}${reservation['student']['class']['subGroup']}</td>
                                 <td>${reservation['lesson']['subject']['name']}</td>
                                 <td>${reservation['reservationStatus']['name']}</td>
                                 <td>
@@ -84,6 +87,7 @@
                             <tr>
                             <th>Numer</th>
                             <th>Uczeń</th>
+                            <th>Klasa</th>
                             <th>Przedmiot</th>
                             <th>Status</th>
                         </tr>` + 
@@ -106,7 +110,9 @@
                 dataType: 'json',
                 success: function (response) {
                     snackbar(response['message']);
-                    location.reload();
+                    setTimeout(function () {
+                        location.reload();
+                    }, 3000);
                 }
             });
         }

@@ -14,7 +14,12 @@
     <h1>Dodaj klasę</h1>
     <div class="flex flex-row items-center">
         <form>
-            <input type="number" name="number" placeholder="Klasa">
+            <select id="number">
+                <option selected disabled>Numer klasy</option>
+                {% for i in 6..8 %}
+                    <option value="{{ i }}">{{ i }}</option>
+                {% endfor %}
+            </select>
             <input type="text" name="subclass" placeholder="Profil">
         </form>
         <button id="create-group" class="btn btn--accept m-2" type="button">Dodaj</button>
@@ -70,12 +75,19 @@
                                 <td>${user['uuid']}</td>
                                 <td>${user['defaultPassword']}</td>
                                 <td><button class="btn btn--danger" value="${user['id']}" onclick="deleteUser(this)">Usuń</button></td>
+                                <td><button class="btn btn--default" value="${user['id']}" onclick="revokePassword(this)">Resetuj hasło</button></td>
                             </tr>
                         `
                     })
                     $('#users').append(
                         `<table id="users-table">` + data + `</table>`
                     );
+                },
+                error: function (response) {
+                    snackbar('Wystąpił nie znany błąd');
+                    setTimeout(function () {
+                        location.reload();
+                    }, 3000);
                 }
             });
         });
@@ -96,13 +108,21 @@
                 dataType: "json",
                 success: function (response) {
                     snackbar(response['message']);
-                    location.reload();
+                    setTimeout(function () {
+                        location.reload();
+                    }, 3000);
+                },
+                error: function (response) {
+                    snackbar('Wystąpił nie znany błąd');
+                    setTimeout(function () {
+                        location.reload();
+                    }, 3000);
                 }
             });
         });
 
         $('#create-group').on('click', function () {
-            var number = $('input[name=number]').val();
+            var number = $('#number').val();
             var subclass = $('input[name=subclass]').val();
 
             $.ajax({
@@ -115,7 +135,15 @@
                 dataType: "json",
                 success: function (response) {
                     snackbar(response['message']);
-                    location.reload();
+                    setTimeout(function () {
+                        location.reload();
+                    }, 3000);
+                },
+                error: function (response) {
+                    snackbar('Wystąpił nie znany błąd');
+                    setTimeout(function () {
+                        location.reload();
+                    }, 3000);
                 }
             });
         });
@@ -132,7 +160,40 @@
                 dataType: 'json',
                 success: function (response) {
                     snackbar(response['message']);
-                    location.reload();
+                    setTimeout(function () {
+                        location.reload();
+                    }, 3000);
+                },
+                error: function (response) {
+                    snackbar('Wystąpił nie znany błąd');
+                    setTimeout(function () {
+                        location.reload();
+                    }, 3000);
+                }
+            });
+        }
+
+        function revokePassword(button) {
+            var id = button.value;
+            $.ajax({
+                url: "{{ path('admin.revoke.password') }}",
+                data: {
+                    id: id
+                },
+                method: "GET",
+                contentType: 'application/json',
+                dataType: 'json',
+                success: function (response) {
+                    snackbar(response['message']);
+                    setTimeout(function () {
+                        location.reload();
+                    }, 3000);
+                },
+                error: function (response) {
+                    snackbar('Wystąpił nie znany błąd');
+                    setTimeout(function () {
+                        location.reload();
+                    }, 3000);
                 }
             });
         }

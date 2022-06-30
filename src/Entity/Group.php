@@ -17,7 +17,7 @@ class Group
     #[ORM\Column(type: 'integer')]
     private $number;
 
-    #[ORM\Column(type: 'string', length: 1, nullable: true)]
+    #[ORM\Column(type: 'string', length: 3, nullable: true)]
     private $subGroup;
 
     public function getId(): ?int

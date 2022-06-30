@@ -66,9 +66,9 @@
                 $('*#lessons').each(function () {
                     if($(this).val()){
                         lessons += $(this).val() + ",";
-                    } else {
-                        snackbar('Zarezerwuj wszystkie dostępne godziny');
-                        //return false;
+                    // } else {
+                    //     snackbar('Zarezerwuj wszystkie dostępne godziny');
+                    //     return false;
                     }
                 });
 
@@ -98,7 +98,7 @@
         </h1>
         <div>
             <select id="lessons">
-                <option selected disabled>Klasa</option>
+                <option selected disabled>Lekcja</option>
                 {% for lesson in lessons %}
                     <option value="{{ lesson.id }}">{{ lesson.subject.name }} - {{ dayOfWeek[lesson.dayOfWeek] }} - Godzina lekcyjna {{ lesson.time }}</option>
                 {% endfor %}
@@ -109,6 +109,7 @@
         </div>
         <button id="check-list" class="btn btn--accept md:w-auto w-full mt-2">Zastosuj</button>
         <script>
+            $('#check-list').hide();
             $('#lessons').on('change', function () {
                 var lesson = $(this).val();
 
@@ -145,8 +146,6 @@
                 $('*input[name=presence]').each(function () {
                     students[$(this).val()] = $(this).is(':checked');
                 });
-
-                console.log(students);
 
                 $.ajax({
                     type: "GET",

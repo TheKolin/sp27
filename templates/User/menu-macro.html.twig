@@ -11,6 +11,13 @@
                     Zmiana hasła
                 </a>
             </li>
+            {% if is_granted('ROLE_ADMIN') %}
+                <li class="p-4 {% if currentPage == 'changePassword' %} border-b-2 border-blue-500 {% endif %}">
+                    <a href="{{ path('admin.dashboard') }}">
+                        Panel administracyjny
+                    </a>
+                </li>
+            {% endif %}
         </ul>
         <div class="p-4 align-middle">
             <a class="btn btn--default" href="{{ path('logout') }}">Wyloguj</a>

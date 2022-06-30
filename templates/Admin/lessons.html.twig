@@ -74,7 +74,7 @@
                     <td>{{ lesson.subject.name }}</td>
                     <td>{{ lesson.teacher.firstName }} {{ lesson.teacher.lastName }}</td>
                     <td>{{ lesson.lessonType.name }}</td>
-                    <td>{{ dayOfWeek[lesson.dayOfWeek] }}</td>
+                    <td>{% if dayOfWeek[lesson.dayOfWeek] is defined %} {{ dayOfWeek[lesson.dayOfWeek] }} {% endif %}</td>
                     <td>{{ lesson.time }}</td>
                     <td><button class="btn btn--danger" value="{{ lesson.id }}" onclick="deleteLesson(this)">Usuń</button></td>
                 </tr>
@@ -103,7 +103,9 @@
                 dataType: 'json',
                 success: function (response) {
                     snackbar(response['message']);
-                    location.reload();
+                    setTimeout(function () {
+                        location.reload();
+                    }, 3000);
                 }
             });
         });
@@ -121,7 +123,9 @@
                 dataType: 'json',
                 success: function (response) {
                     snackbar(response['message']);
-                    location.reload();
+                    setTimeout(function () {
+                        location.reload();
+                    }, 3000);
                 }
             });
         });
@@ -138,7 +142,9 @@
                 dataType: 'json',
                 success: function (response) {
                     snackbar(response['message']);
-                    location.reload();
+                    setTimeout(function () {
+                        location.reload();
+                    }, 3000);
                 }
             });
         }
