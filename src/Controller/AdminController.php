@@ -131,8 +131,8 @@ class AdminController extends AbstractController
         
         $user->setUserStatus($this->userStatusRepository->findOneBy(['code' => UserStatus::CREATED]));
 
-        $user->setUuid(uniqid());
-        $defaultPassword = uniqid();
+        $user->setUuid(random_int(100000, 999999));
+        $defaultPassword = $user->getUuid();
         $user->setPassword($userPasswordHasher->hashPassword($user, $defaultPassword));
         $user->setDefaultPassword($defaultPassword);
 
@@ -245,7 +245,7 @@ class AdminController extends AbstractController
         $name = $request->query->get('name');
 
         $findSubject = $this->subjectRepository->findBy(['name' => $name]);
-        if($findSubject > 0){
+        if(count($findSubject)){
             return $this->json(['message' => 'Taki przedmiot już istnieje']);
         }
 
