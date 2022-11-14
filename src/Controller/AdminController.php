@@ -197,7 +197,7 @@ class AdminController extends AbstractController
         $subclass = $request->query->get('subclass');
 
         $findGroup = $this->groupRepository->findBy(['number' => $number, 'subGroup' => $subclass]);
-        if($findGroup > 0){
+        if(count($findGroup)){
             return $this->json(['message' => 'Taka klasa już istnieje']);
         }
 

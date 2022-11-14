@@ -1,0 +1,16 @@
+version: '3.7'
+services:
+  sp27:
+    build:
+      context: ~/workspace/sp27/sp27
+      network: host
+    container_name: sp27
+    ports:
+      - "8000:80"
+    volumes:
+      - ~/workspace/sp27/sp27:/var/www/html
+    env_file:
+      - ~/workspace/sp27/sp27/.env
+    environment:
+      - COMPOSER_MEMORY_LIMIT=-1 //-1 means unlimited
+
