@@ -4,100 +4,14 @@
         <meta charset="UTF-8">
         <meta name="viewport" content="width=device-width, initial-scale=1.0">
         <title>{% block title %}Welcome!{% endblock %}</title>
-        <script
-            src="https://code.jquery.com/jquery-3.6.0.min.js"
-            integrity="sha256-/xUj+3OJU5yExlq6GSYGSHk7tPXikynS7ogEvDej/m4="
-            crossorigin="anonymous"></script>
-        <script src="https://cdn.tailwindcss.com"></script>
-        <style type="text/tailwindcss">
-            @layer utilities {
-                input, select {
-                    @apply border border-gray-500 rounded-sm bg-transparent p-2;
-                }
 
-                table{
-                    @apply m-2;
-                }
+        {% block stylesheets %}
+            {{ encore_entry_link_tags('app') }}
+        {% endblock %}
 
-                tr{
-                    @apply border-b border-gray-200
-                }
-
-                tr:nth-child(even){
-                    @apply bg-gray-100
-                }
-
-                td, th{
-                    @apply p-2;
-                }
-
-                .btn {
-                    @apply py-2 px-4 cursor-pointer rounded-sm;
-                }
-
-                .btn--default{
-                    @apply bg-blue-500 text-white;
-                }
-
-                .btn--danger{
-                    @apply bg-red-600 text-white;
-                }
-
-                .btn--accept{
-                    @apply bg-green-500 text-white;
-                }
-
-                h1{
-                    @apply text-2xl mt-4 mb-2
-                }
-            }
-
-            /* The snackbar - position it at the bottom and in the middle of the screen */
-            #snackbar {
-            visibility: hidden; /* Hidden by default. Visible on click */
-            min-width: 250px; /* Set a default minimum width */
-            margin-left: -125px; /* Divide value of min-width by 2 */
-            background-color: #333; /* Black background color */
-            color: #fff; /* White text color */
-            text-align: center; /* Centered text */
-            border-radius: 2px; /* Rounded borders */
-            padding: 16px; /* Padding */
-            position: fixed; /* Sit on top of the screen */
-            z-index: 1; /* Add a z-index if needed */
-            left: 50%; /* Center the snackbar */
-            bottom: 30px; /* 30px from the bottom */
-            }
-
-            /* Show the snackbar when clicking on a button (class added with JavaScript) */
-            #snackbar.show {
-            visibility: visible; /* Show the snackbar */
-            /* Add animation: Take 0.5 seconds to fade in and out the snackbar.
-            However, delay the fade out process for 2.5 seconds */
-            -webkit-animation: fadein 0.5s, fadeout 0.5s 2.5s;
-            animation: fadein 0.5s, fadeout 0.5s 2.5s;
-            }
-
-            /* Animations to fade the snackbar in and out */
-            @-webkit-keyframes fadein {
-            from {bottom: 0; opacity: 0;}
-            to {bottom: 30px; opacity: 1;}
-            }
-
-            @keyframes fadein {
-            from {bottom: 0; opacity: 0;}
-            to {bottom: 30px; opacity: 1;}
-            }
-
-            @-webkit-keyframes fadeout {
-            from {bottom: 30px; opacity: 1;}
-            to {bottom: 0; opacity: 0;}
-            }
-
-            @keyframes fadeout {
-            from {bottom: 30px; opacity: 1;}
-            to {bottom: 0; opacity: 0;}
-            }
-        </style>
+        {% block javascripts %}
+            {{ encore_entry_script_tags('app') }}
+        {% endblock %}
     </head>
     <body>
         {% block header %}
