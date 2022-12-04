@@ -3,3 +3,29 @@
 @import "tailwindcss/components";
 
 @import "tailwindcss/utilities";
+
+@layer components {
+    .btn {
+        @apply duration-500 px-6 py-2 mx-4 rounded
+    }
+
+    .btn--logi {
+        @apply bg-logi-blue hover:bg-logi-blue-dark text-logi-white
+    }
+
+    .btn--logi-dark {
+        @apply bg-logi-blue-dark hover:bg-logi-blue text-logi-black
+    }
+
+    .btn--sbs {
+        @apply bg-sbs-green hover:bg-sbs-green-dark text-logi-white
+    }
+
+    .btn--sbs-dark {
+        @apply bg-sbs-green-dark hover:bg-sbs-green text-logi-black
+    }
+
+    .text-dark-default {
+        @apply text-logi-black dark:text-logi-white duration-500
+    }
+}
