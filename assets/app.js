@@ -11,5 +11,8 @@ import './styles/app.css';
 // start the Stimulus application
 import './bootstrap';
 //Adds global jQuery for usage
+import Cookies from 'js-cookie'
+
 const $ = require("jquery");
 global.$ = global.jQuery = $;
+global.Cookies = Cookies;

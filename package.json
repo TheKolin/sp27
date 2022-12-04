@@ -28,7 +28,8 @@
   "dependencies": {
     "@symfony/stimulus-bridge": "^3.2.1",
     "@symfony/webpack-encore": "^4.1.2",
-    "jquery": "^3.6.1"
+    "jquery": "^3.6.1",
+    "js-cookie": "^3.0.1"
   },
   "description": ""
 }

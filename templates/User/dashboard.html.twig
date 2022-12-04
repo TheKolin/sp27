@@ -1,7 +1,5 @@
 {% extends 'base.html.twig' %}
 
-{% import "User/menu-macro.html.twig" as menu %}
-
 {% set dayOfWeek = ['Poniedziałek', 'Wtorek', 'Środa', 'Czwartek', 'Piątek'] %}
 {% set TEACHER = constant('App\\Entity\\UserType::TEACHER') %}
 {% set STUDENT = constant('App\\Entity\\UserType::STUDENT') %}
@@ -15,28 +13,29 @@
     {% endif %}
 {% endblock %}
 
-{% block header %}
-    {{ menu.menu('dashboard') }}
-{% endblock %}
-
 {% block body %}
     {% if app.user.userType.code == STUDENT %}
-        <h1 class=" text-xl font-semibold">
+        <h1 class="text-xl font-semibold text-dark-default">
             Cześć {{ app.user.firstName }} {{ app.user.lastName }}!
         </h1>
         <div class="md:absolute md:top-1/2 md:left-1/2 md:-translate-x-1/2 md:-translate-y-1/2">
             <div class="flex md:flex-row flex-col">
                 {% for i in 0..4 %}
                     <div>
-                        <div class="border-b text-center font-bold">{{ dayOfWeek[i] }}</div>
+                        <div class="border-b dark:border-logi-black text-center text-dark-default font-bold p-2">{{ dayOfWeek[i] }}</div>
                         {% for j in 0..2 %}
-                            <div class="border-b p-2 flex flex-row items-center">
+                            <div class="border-b dark:border-logi-black text-dark-default p-2 flex flex-row items-center">
                                 <span class="{% if i != 0 %} md:hidden block {% endif %} mr-4">{{ j }}</span>
-                                <select id="lessons" class="w-full border-0 outline-none p-2" {% if reservations|length > 0 %}disabled{% endif %}>
-                                    <option selected disabled>Wybierz</option>
+                                <select
+                                    id="lessons"
+                                    class="w-full border-0 outline-none p-2 bg-transparent text-dark-default"
+                                    {% if reservations|length > 0 %}disabled{% endif %}
+                                >
+                                    <option class="text-dark-default dark:bg-logi-dark" selected disabled>Wybierz</option>
                                     {% for choosableLesson in choosableLessons %}
                                         {% if choosableLesson.dayOfWeek == i and choosableLesson.time == j %}
-                                            <option 
+                                            <option
+                                                class="text-dark-default dark:bg-logi-dark"
                                                 {% if choosableLesson.studentsCount >= 25 %} 
                                                     disabled 
                                                 {% else %} 
@@ -58,7 +57,7 @@
                     </div>
                 {% endfor %}
             </div>
-            <button id="reserve" class="btn btn--accept md:w-auto w-full mt-2">Zastosuj</button>
+            <button id="reserve" class="btn btn--sbs dark:btn--sbs-dark md:w-auto w-full mt-2">ZASTOSUJ</button>
         </div>
         <script>
             $('#reserve').on('click', function () {
