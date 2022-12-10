@@ -10,22 +10,18 @@
     }
 
     .btn--logi {
-        @apply bg-logi-blue hover:bg-logi-blue-dark text-logi-white
-    }
-
-    .btn--logi-dark {
-        @apply bg-logi-blue-dark hover:bg-logi-blue text-logi-black
+        @apply bg-logi-blue hover:bg-logi-blue-dark text-logi-white dark:bg-logi-blue-dark dark:hover:bg-logi-blue dark:text-logi-black
     }
 
     .btn--sbs {
-        @apply bg-sbs-green hover:bg-sbs-green-dark text-logi-white
-    }
-
-    .btn--sbs-dark {
-        @apply bg-sbs-green-dark hover:bg-sbs-green text-logi-black
+        @apply bg-sbs-green hover:bg-sbs-green-dark text-logi-white dark:bg-sbs-green-dark dark:hover:bg-sbs-green dark:text-logi-black
     }
 
     .text-dark-default {
         @apply text-logi-black dark:text-logi-white duration-500
+    }
+
+    .input-dark-default {
+        @apply border border-logi-blue dark:border-logi-blue-dark bg-transparent rounded-lg outline-0 p-1
     }
 }

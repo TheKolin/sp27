@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html>
+<html class="{{ app.request.cookies.get('darkMode') }}">
 	<head>
 		<meta charset="UTF-8">
 		<meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -69,18 +69,15 @@
         </div>
         <script>
             $(document).ready(function () {
-                var darkSwitcher = $('#darkSwitcher')
-                var darkSwitcherSpan = darkSwitcher.children('span');
-                if(Cookies.get('darkMode')){
-                    $('html').toggleClass('dark');
-                    darkSwitcherSpan.text('light_mode');
-                }
+				const darkSwitcher = $('#darkSwitcher');
+				const darkSwitcherSpan = darkSwitcher.children('span');
+				const html = $('html');
 
-                darkSwitcher.on('click', function () {
-                    darkSwitcherSpan.text($.trim(darkSwitcherSpan.text()) == 'light_mode' ? 'dark_mode' : 'light_mode');
-                    $('html').toggleClass('dark');
-                    if ($('html').hasClass('dark')) {
-                        Cookies.set('darkMode', '1', {
+				darkSwitcher.on('click', function () {
+                    darkSwitcherSpan.text($.trim(darkSwitcherSpan.text()) === 'light_mode' ? 'dark_mode' : 'light_mode');
+					html.toggleClass('dark');
+                    if (html.hasClass('dark')) {
+                        Cookies.set('darkMode', 'dark', {
                             expires: 7,
                             path: '/'
                         });
