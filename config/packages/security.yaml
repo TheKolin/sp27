@@ -17,8 +17,8 @@ security:
             lazy: true
             provider: app_user_provider
             json_login:
-                check_path: security.login.json
-                username_path: email
+                check_path: ajax.login
+                username_path: uuid
                 password_path: password
             custom_authenticator: App\Security\SecurityAuthenticator
             logout:

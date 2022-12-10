@@ -14,7 +14,8 @@ module.exports = {
                 'logi-white': '#F4F3F4',
                 'logi-black': '#080608',
                 'sbs-green-dark': '#38661d',
-                'sbs-green': '#66B933'
+                'sbs-green': '#66B933',
+                'yt-red': '#FF0000'
             }
         },
     },

@@ -1,0 +1,84 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@48,400,0,0" />
+        <title>
+            {% block title %}Welcome!
+            {% endblock %}
+        </title>
+
+        {% block stylesheets %}
+            {{ encore_entry_link_tags('app') }}
+        {% endblock %}
+
+        {% block javascripts %}
+            {{ encore_entry_script_tags('app') }}
+        {% endblock %}
+    </head>
+    <body class="bg-white dark:bg-logi-dark transition-all duration-500">
+        <nav class="p-5 shadow dark:shadow-logi-black md:flex md:items-center md:justify-between duration-500">
+            <div class="flex justify-between items-center ">
+                <span class="text-2xl cursor-pointer">
+                    <img class="h-10 inline" src="https://tailwindcss.com/_next/static/media/social-square.b622e290e82093c36cca57092ffe494f.jpg">
+                    <span class="text-dark-default">
+                        RESERVATIO
+                    </span>
+                </span>
+                <span class="text-3xl cursor-pointer mx-2 md:hidden block">
+                    <span name="menu" onclick="Menu(this)" class="material-symbols-outlined">menu</span>
+                </span>
+            </div>
+            <button id="darkSwitcher" class="btn">
+                <span class="material-symbols-outlined text-dark-default hover:text-logi-blue">
+                    dark_mode
+                </span>
+            </button>
+        </nav>
+        <div class="p-10">
+            {% block body %}
+
+            {% endblock %}
+        </div>
+        <script>
+            $(document).ready(function () {
+                var darkSwitcher = $('#darkSwitcher')
+                var darkSwitcherSpan = darkSwitcher.children('span');
+                if(Cookies.get('darkMode')){
+                    $('html').toggleClass('dark');
+                    darkSwitcherSpan.text('light_mode');
+                }
+
+                darkSwitcher.on('click', function () {
+                    darkSwitcherSpan.text($.trim(darkSwitcherSpan.text()) == 'light_mode' ? 'dark_mode' : 'light_mode');
+                    $('html').toggleClass('dark');
+                    if ($('html').hasClass('dark')) {
+                        Cookies.set('darkMode', '1', {
+                            expires: 7,
+                            path: '/'
+                        });
+                    } else {
+                        Cookies.remove('darkMode');
+                    }
+                });
+            });
+
+            function snackbar( message ) { // Get the snackbar DIV
+                var x = document.getElementById( "snackbar" );
+                // Add the "show" class to DIV
+                x.className = "show";
+                x.innerHTML = message;
+                // After 3 seconds, remove the show class from DIV
+                setTimeout( function () {
+                    x.className = x.className.replace( "show", "" );
+                }, 3000 );
+            }
+
+            function Menu(e){
+                let list = document.querySelector('#ul');
+                e.name === 'menu' ? (e.name = "close",list.classList.add('top-[80px]') , list.classList.add('opacity-100')) :( e.name = "menu" ,list.classList.remove('top-[80px]'),list.classList.remove('opacity-100'))
+            }
+        </script>
+    </body>
+</html>
