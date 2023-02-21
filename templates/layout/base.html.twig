@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html class="{{ app.request.cookies.get('darkMode') }}">
+<html class="{{ app.request.cookies.get('darkMode') }} h-full">
 	<head>
 		<meta charset="UTF-8">
 		<meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -17,8 +17,8 @@
 			{{ encore_entry_script_tags('app') }}
 		{% endblock %}
 	</head>
-	<body class="bg-white dark:bg-logi-dark transition-all duration-500">
-		<nav class="p-5 shadow dark:shadow-logi-black md:flex md:items-center md:justify-between duration-500">
+	<body class="bg-logi-white dark:bg-logi-dark transition-all duration-500 h-full flex flex-col">
+		<nav class="p-5 shadow-dark-default md:flex md:items-center md:justify-between flex-grow-0 flex-shrink">
 			<div class="flex justify-between items-center ">
 				<span class="text-2xl cursor-pointer">
 					<img class="h-10 inline" src="https://tailwindcss.com/_next/static/media/social-square.b622e290e82093c36cca57092ffe494f.jpg">
@@ -43,26 +43,22 @@
 						ZMIANA HASŁA
 					</a>
 				</li>
+				{% if is_granted('ROLE_ADMIN') %}
                 <li class="mx-4 my-6 md:my-0">
                     <a class="text-xl text-dark-default hover:text-logi-blue" href="{{ path('admin.dashboard') }}">
 						PANEL ADMINISTRACYJNY
 					</a>
 				</li>
+				{% endif %}
                 <button id="darkSwitcher" class="btn">
                     <span class="material-symbols-outlined text-dark-default hover:text-logi-blue">
                         dark_mode
                     </span>
                 </button>
-				<button id="logout" class="btn btn--logi dark:btn--logi-dark">
-					WYLOGUJ
-				</button>
-                {# <div class="p-4 align-middle">
-				    <a class="btn btn--primary" href="{{ path('logout') }}"></a>
-			    </div> #}
-				<h2 class=""></h2>
+				<a class="btn btn--logi" href="{{ path('logout') }}">WYLOGUJ</a>
 			</ul>
 		</nav>
-		<div class="p-10"> 
+		<div class="flex-1">
             {% block body %}
 
             {% endblock %}

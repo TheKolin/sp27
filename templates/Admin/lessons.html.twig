@@ -1,73 +1,68 @@
-{% extends 'base.html.twig' %}
-
-{% import "Admin/macro/menu-macro.html.twig" as menu %}
+{% extends 'layout/base-admin.html.twig' %}
 
 {% set dayOfWeek = ['Poniedziałek', 'Wtorek', 'Środa', 'Czwartek', 'Piątek'] %}
 
 {% block title %} Lekcje {% endblock %}
 
-{% block header %}
-    {{ menu.menu('lessons') }}
-{% endblock %}
-
-{% block body %}
-    <h1>Dodawanie przedmiotu</h1>
-    <div class="flex flex-row items-center">
-        <form>
-            <input type="text" name="name" placeholder="Nazwa przedmiotu">
+{% block content %}
+    <div class="text-dark-default mb-4">
+        <h1>Dodawanie przedmiotu</h1>
+        <form class="flex flex-row items-center">
+            <input type="text" name="name" placeholder="Nazwa przedmiotu" class="input-dark-default">
+            <button id="create-subject" type="button" class="btn btn--sbs m-2">Dodaj</button>
         </form>
-        <button id="create-subject" type="button" class="btn btn--accept m-2">Dodaj</button>
     </div>
-    <h1>Dodawanie zajęć</h1>
-    <div class="flex flex-row items-center">
-        <form>
-            <select id="subjects">
+    <div class="text-dark-default mb-4">
+        <h1>Dodawanie zajęć</h1>
+        <form class="flex flex-row items-center">
+            <select id="subjects" class="select-dark-border">
                 <option selected disabled>Przedmiot</option>
                 {% for subject in subjects %}
                     <option value="{{ subject.id }}">{{ subject.name }}</option>
                 {% endfor %}
             </select>
-            <select id="teachers">
+            <select id="teachers" class="select-dark-border">
                 <option selected disabled>Nauczyciel</option>
                 {% for teacher in teachers %}
                     <option value="{{ teacher.id }}">{{ teacher.firstName }} {{ teacher.lastName }}</option>
                 {% endfor %}
             </select>
-            <select id="types">
+            <select id="types" class="select-dark-border">
                 <option selected disabled>Typ zajęć</option>
                 {% for lessonType in lessonTypes %}
                     <option value="{{ lessonType.code }}">{{ lessonType.name }}</option>
                 {% endfor %}
             </select>
-            <input type="number" name="dayOfWeek" placeholder="Dzień tygodnia">
-            <input type="number" name="time" placeholder="Godzina lekcyjna">
+            <input type="number" name="dayOfWeek" placeholder="Dzień tygodnia" class="input-dark-default">
+            <input type="number" name="time" placeholder="Godzina lekcyjna" class="input-dark-default">
+            <button id="create-lesson" type="button" class="btn btn--sbs m-2">Dodaj</button>
         </form>
-        <button id="create-lesson" type="button" class="btn btn--accept m-2">Dodaj</button>
     </div>
-    <h1>Przedmioty szkolne</h1>
-    <div>
-        <table>
+    <div class="text-dark-default mb-4">
+        <h1>Przedmioty szkolne</h1>
+        <table class="custom-table">
             <tr>
                 <th>Numer</th>
                 <th>Nazwa</th>
             </tr>
             {% for subject in subjects %}
-                <tr class="border-b">
+                <tr>
                     <td>{{ subject.id }}</td>
                     <td>{{ subject.name }}</td>
                 </tr>
             {% endfor %}
         </table>
     </div>
-    <h1>Zajęcia szkolne</h1>
-    <div>
-        <table>
+    <div class="text-dark-default mb-4">
+        <h1>Zajęcia szkolne</h1>
+        <table class="custom-table">
             <tr>
                 <th>Przedmiot</th>
                 <th>Nauczyciel</th>
                 <th>Typ zajęć</th>
                 <th>Dzień tygodnia</th>
                 <th>Godzina lekcyjna</th>
+                <th>Akcja</th>
             </tr>
             {% for lesson in lessons %}
                 <tr id="lesson-{{ lesson.id }}" class="border-b">
@@ -76,7 +71,7 @@
                     <td>{{ lesson.lessonType.name }}</td>
                     <td>{% if dayOfWeek[lesson.dayOfWeek] is defined %} {{ dayOfWeek[lesson.dayOfWeek] }} {% endif %}</td>
                     <td>{{ lesson.time }}</td>
-                    <td><button class="btn btn--danger" value="{{ lesson.id }}" onclick="deleteLesson(this)">Usuń</button></td>
+                    <td><button class="btn btn--red" value="{{ lesson.id }}" onclick="deleteLesson(this)">Usuń</button></td>
                 </tr>
             {% endfor %}
         </table>

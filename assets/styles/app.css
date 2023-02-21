@@ -10,11 +10,15 @@
     }
 
     .btn--logi {
-        @apply bg-logi-blue hover:bg-logi-blue-dark text-logi-white dark:bg-logi-blue-dark dark:hover:bg-logi-blue dark:text-logi-black
+        @apply bg-logi-blue hover:bg-logi-blue-dark text-logi-white dark:bg-logi-blue-dark dark:hover:bg-logi-blue
     }
 
     .btn--sbs {
-        @apply bg-sbs-green hover:bg-sbs-green-dark text-logi-white dark:bg-sbs-green-dark dark:hover:bg-sbs-green dark:text-logi-black
+        @apply bg-sbs-green hover:bg-sbs-green-dark text-logi-white dark:bg-sbs-green-dark dark:hover:bg-sbs-green
+    }
+
+    .btn--red {
+        @apply bg-yt-red text-logi-white
     }
 
     .text-dark-default {
@@ -22,6 +26,30 @@
     }
 
     .input-dark-default {
-        @apply border border-logi-blue dark:border-logi-blue-dark bg-transparent rounded-lg outline-0 p-1
+        @apply border border-logi-blue dark:border-logi-blue-dark bg-transparent rounded-lg outline-0 p-1 mx-1
+    }
+
+    .shadow-dark-default {
+        @apply shadow dark:shadow-logi-black duration-500
+    }
+
+    .select-dark-default {
+        @apply border-0 outline-none p-2 bg-transparent text-dark-default
+    }
+
+    .select-dark-border {
+        @apply outline-none p-1 bg-transparent text-dark-default border border-logi-blue dark:border-logi-blue-dark rounded-lg mx-1
+    }
+
+    .select-dark-default option, .select-dark-border option {
+        @apply text-dark-default dark:bg-logi-dark
+    }
+
+    .custom-table td, .custom-table th {
+        @apply p-2
+    }
+
+    .custom-table tr {
+        @apply border-b dark:border-logi-black
     }
 }

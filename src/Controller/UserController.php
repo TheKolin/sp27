@@ -173,9 +173,7 @@ class UserController extends AbstractController
      * )
      */
     public function userPassword(): Response {
-        return $this->render('User/password.html.twig', [
-
-        ]);
+        return $this->render('User/password.html.twig');
     }
 
     /**

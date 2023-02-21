@@ -1,47 +1,42 @@
-{% extends 'base.html.twig' %}
+{% extends 'layout/base-admin.html.twig' %}
 
 {% set TEACHER = constant('App\\Entity\\UserType::TEACHER') %}
 
-{% import "Admin/macro/menu-macro.html.twig" as menu %}
-
 {% block title %} Użytkownicy {% endblock %}
 
-{% block header %}
-    {{ menu.menu('users') }}
-{% endblock %}
-
-{% block body %}
-    <h1>Dodaj klasę</h1>
-    <div class="flex flex-row items-center">
-        <form>
-            <select id="number">
+{% block content %}
+    <h1 class="text-dark-default text-2xl mb-4">UŻYTKOWNICY</h1>
+    <div class="text-dark-default mb-4">
+        <h1>Dodaj klasę</h1>
+        <form class="flex flex-row items-center">
+            <select id="number" class="select-dark-border">
                 <option selected disabled>Numer klasy</option>
                 {% for i in 6..8 %}
                     <option value="{{ i }}">{{ i }}</option>
                 {% endfor %}
             </select>
-            <input type="text" name="subclass" placeholder="Profil">
+            <input type="text" name="subclass" placeholder="Profil" class="input-dark-default">
+            <button id="create-group" class="btn btn--sbs m-2" type="button">Dodaj</button>
         </form>
-        <button id="create-group" class="btn btn--accept m-2" type="button">Dodaj</button>
     </div>
-    <h1>Dodaj użytkownika</h1>
-    <div class="flex flex-row items-center">
-        <form>
-            <input type="text" name="firstName" placeholder="Imię">
-            <input type="text" name="lastName" placeholder="Nazwisko">
-            <select id="user-group">
+    <div class="text-dark-default mb-4">
+        <h1>Dodaj użytkownika</h1>
+        <form class="flex flex-row items-center">
+            <input type="text" name="firstName" placeholder="Imię" class="input-dark-default text-dark-default">
+            <input type="text" name="lastName" placeholder="Nazwisko" class="input-dark-default text-dark-default">
+            <select id="user-group" class="select-dark-border">
                 <option selected disabled>Grupa</option>
                 <option value="{{ TEACHER }}">Nauczyciele</option>
                 {% for group in groups %}
                     <option value="{{ group.id }}">{{ group.number }}{{ group.subGroup }}</option>
                 {% endfor %}
             </select>
+            <button id="create" class="btn btn--sbs m-2" type="button">Dodaj</button>
         </form>
-        <button id="create" class="btn btn--accept m-2" type="button">Dodaj</button>
     </div>
-    <h1>Wybierz grupę do wyświetlenia użytkowników</h1>
-    <div>
-        <select id="group">
+    <div class="text-dark-default">
+        <h1 class="mb-2">Wybierz grupę do wyświetlenia użytkowników</h1>
+        <select id="group" class="select-dark-border">
             <option selected disabled>Grupa</option>
             <option value="{{ TEACHER }}">Nauczyciele</option>
             {% for group in groups %}
@@ -49,7 +44,7 @@
             {% endfor %}
         </select>
     </div>
-    <div id="users">
+    <div id="users" class="text-dark-default">
     
     </div>
     <script>
@@ -74,13 +69,21 @@
                                 <td>${user['userStatus']['name']}</td>
                                 <td>${user['uuid']}</td>
                                 <td>${user['defaultPassword']}</td>
-                                <td><button class="btn btn--danger" value="${user['id']}" onclick="deleteUser(this)">Usuń</button></td>
-                                <td><button class="btn btn--default" value="${user['id']}" onclick="revokePassword(this)">Resetuj hasło</button></td>
+                                <td><button class="btn btn--red" value="${user['id']}" onclick="deleteUser(this)">Usuń</button></td>
+                                <td><button class="btn btn--logi" value="${user['id']}" onclick="revokePassword(this)">Resetuj hasło</button></td>
                             </tr>
                         `
                     })
                     $('#users').append(
-                        `<table id="users-table">` + data + `</table>`
+                        `<table id="users-table" class="custom-table">
+                            <tr>
+                                <th>Imie</th>
+                                <th>Nazwisko</th>
+                                <th>Status</th>
+                                <th>Login</th>
+                                <th>Domyślne hasło</th>
+                                <th>Akcja</th>
+                            </tr>` + data + `</table>`
                     );
                 },
                 error: function (response) {
