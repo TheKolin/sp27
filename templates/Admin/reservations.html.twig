@@ -1,56 +1,30 @@
-{% extends 'base.html.twig' %}
+{% extends 'layout/base-admin.html.twig' %}
 
 {% set TEACHER = constant('App\\Entity\\UserType::TEACHER') %}
 
-{% import "Admin/macro/menu-macro.html.twig" as menu %}
-
 {% block title %} Rezerwacje {% endblock %}
 
-{% block header %}
-    {{ menu.menu('reservations') }}
-{% endblock %}
-
-{% block body %}
-    <h1>Filtry</h1>
+{% block content %}
+    <h1 class="text-dark-default text-2xl mb-4">REZERWACJE</h1>
     <div>
-        <select id="students">
+        <select id="students" class="select-dark-border">
             <option selected disabled>Uczeń</option>
             <option value="">-</option>
             {% for student in students %}
                 <option value="{{ student.id }}">{{ student.firstName }} {{ student.lastName }} {{ student.class.number }}{{ student.class.subGroup }}</option>
             {% endfor %}
         </select>
-        <select id="statuses">
+        <select id="statuses" class="select-dark-border">
             <option selected disabled>Status</option>
             <option value="">-</option>
             {% for reservationStatus in reservationStatuses %}
                 <option value="{{ reservationStatus.code }}">{{ reservationStatus.name }}</option>
             {% endfor %}
         </select>
-        <button id="filter" class="btn btn--default">Filtruj</button>
+        <button id="filter" class="btn btn--logi">FILTRUJ</button>
     </div>
-    <div id="reservation-table">
-        <table id="reservations">
-            <tr>
-                <th>Numer</th>
-                <th>Uczeń</th>
-                <th>Klasa</th>
-                <th>Przedmiot</th>
-                <th>Status</th>
-            </tr>
-                {% for reservation in reservations %}
-                    <tr id="reservation-{{ reservation.id }}">
-                        <td>{{ reservation.id }}</td>
-                        <td>{{ reservation.student.firstName }} {{ reservation.student.lastName }}</td>
-                        <td>{{ reservation.student.class.number }}{{ reservation.student.class.subGroup }}</td>
-                        <td>{{ reservation.lesson.subject.name }}</td>
-                        <td>{{ reservation.reservationStatus.name }}</td>
-                        <td>
-                            <button class="btn btn--danger" value="{{ reservation.id }}" onclick="deleteReservation(this)">Usuń</button>
-                        </td>
-                    </tr>
-                {% endfor %}
-        </table>
+    <div id="reservation-table" class="text-dark-default">
+
     </div>
     <script>
         $('#filter').on('click', function () {
@@ -67,6 +41,10 @@
                 },
                 dataType: "json",
                 success: function (response) {
+                    if (!response.length) {
+                        $('#reservation-table').append('PUSTE');
+                        return;
+                    }
                     var data = '';
                     response.forEach(reservation => {
                         data += `
@@ -77,21 +55,21 @@
                                 <td>${reservation['lesson']['subject']['name']}</td>
                                 <td>${reservation['reservationStatus']['name']}</td>
                                 <td>
-                                    <button class="btn btn--danger" value="${reservation['id']}" onclick="deleteReservation(this)">Usuń</button>
+                                    <button class="btn btn--red" value="${reservation['id']}" onclick="deleteReservation(this)">Usuń</button>
                                 </td>
                             </tr>
                         `
                     })
                     $('#reservation-table').append(
-                        `<table id="reservations">
+                        `<table id="reservations" class="custom-table">
                             <tr>
-                            <th>Numer</th>
-                            <th>Uczeń</th>
-                            <th>Klasa</th>
-                            <th>Przedmiot</th>
-                            <th>Status</th>
-                        </tr>` + 
-                            data 
+                                <th>Numer</th>
+                                <th>Uczeń</th>
+                                <th>Klasa</th>
+                                <th>Przedmiot</th>
+                                <th>Status</th>
+                            </tr>` +
+                            data
                         + `</table>`
                     );
                 }
