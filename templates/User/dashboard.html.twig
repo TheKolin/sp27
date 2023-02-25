@@ -89,21 +89,20 @@
     {% endif %}
 
     {% if app.user.userType.code == TEACHER %}
-        <h1 class=" text-xl font-semibold">
-            Witaj {{ app.user.firstName }} {{ app.user.lastName }}!
-        </h1>
-        <div>
-            <select id="lessons">
-                <option selected disabled>Lekcja</option>
-                {% for lesson in lessons %}
-                    <option value="{{ lesson.id }}">{{ lesson.subject.name }} - {{ dayOfWeek[lesson.dayOfWeek] }} - Godzina lekcyjna {{ lesson.time }}</option>
-                {% endfor %}
-            </select>
+        <div class="m-8">
+            <div>
+                <select id="lessons">
+                    <option selected disabled>Lekcja</option>
+                    {% for lesson in lessons %}
+                        <option value="{{ lesson.id }}">{{ lesson.subject.name }} - {{ dayOfWeek[lesson.dayOfWeek] }} - Godzina lekcyjna {{ lesson.time }}</option>
+                    {% endfor %}
+                </select>
+            </div>
+            <div id="studensList">
+
+            </div>
+            <button id="check-list" class="btn btn--accept md:w-auto w-full mt-2">Zastosuj</button>
         </div>
-        <div id="studensList">
-        
-        </div>
-        <button id="check-list" class="btn btn--accept md:w-auto w-full mt-2">Zastosuj</button>
         <script>
             $('#check-list').hide();
             $('#lessons').on('change', function () {
